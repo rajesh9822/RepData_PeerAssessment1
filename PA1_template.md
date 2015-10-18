@@ -35,7 +35,8 @@ Sys.setlocale("LC_ALL","English")
 ###**Loading and preprocessing the data**
 
 **1.Load the data activity.csv file from your current folder**
-   
+
+Activity file should be unziped and placed in the current folder   
 
 
 ```r
@@ -123,13 +124,13 @@ rug(no_of_steps$steps)
 
 ```r
 # calculating mean
-mean <- mean(no_of_steps$steps)
+mean <- round(mean(no_of_steps$steps),digits=2)
 
 # calculating median 
 median <- median(no_of_steps$steps)
 ```
 
-The **mean** for total number of steps taken per day is **1.0766189\times 10^{4}**.   
+The **mean** for total number of steps taken per day is **1.076619\times 10^{4}**.   
 The **median** for total number of steps taken per day is **10765**.
 
 ###**What is the average daily activity pattern?**
@@ -256,6 +257,9 @@ summary(new_no_of_steps)
 ##  (Other)   :55
 ```
 
+
+If you compare the summary of the data without missing data and with the imputed data you can see that mean is the same i.e 10766 and median has slightly increased and is now equal to the mean.
+
 Plot the Histogram of the total number of steps taken each day
 
 
@@ -292,13 +296,16 @@ The **median** for total number of steps taken per day is **1.0766189\times 10^{
 
 **1.Create a new factor variable (day ) in the dataset with two levels – “weekday” and “weekend” indicating whether a given date is a weekday or weekend day.**
 
+A new variable day is being created by the weekdays function and then we are deciding if its a weekend and weekday based on the day of week it returns.
+
 
 ```r
-#new_data$day <- sapply(new_data[,2], function(x) (as.Date(new_data[,2],"%Y-%m-%d")))
 for (i in 1:nrow(new_data)){
   
+#get the the day of the week  
 temp_day <- weekdays(as.Date(new_data[i,"date"], "%Y-%m-%d"))
   
+# decide if its a weekday or weekend
    if (temp_day == "Sunday")  { 
     
         new_data[i,"day"]  <- "weekend" 
@@ -312,6 +319,7 @@ temp_day <- weekdays(as.Date(new_data[i,"date"], "%Y-%m-%d"))
       }        
 }
 
+# Make the day variable a factor
 new_data$day <- as.factor(new_data$day)
 
 summary(new_data)
